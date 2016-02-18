@@ -27,7 +27,6 @@
         android:orientation="vertical"
         android:layout_alignBottom="@+id/MainMenuImage"
         android:layout_centerHorizontal="true"
-
         android:layout_marginBottom="0dp">
 
 
