@@ -12,9 +12,35 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.jimmyle.pacmanandroid.MainActivity">
 
+
+
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:id="@+id/MainMenuImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/PacmanMainMenu"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignBottom="@+id/MainMenuImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:layout_marginBottom="5dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>
