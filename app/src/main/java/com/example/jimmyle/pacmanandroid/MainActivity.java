@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(this, BackgroundMusicService.class));
     }
 
 //    @Override
@@ -43,16 +42,4 @@ public class MainActivity extends AppCompatActivity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        stopService(new Intent(this,BackgroundMusicService.class));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        startService(new Intent(this, BackgroundMusicService.class));
-    }
 }
