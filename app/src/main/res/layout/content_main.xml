@@ -12,13 +12,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.jimmyle.pacmanandroid.MainActivity">
 
-
-
     <ImageView
         android:id="@+id/MainMenuImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/pacman_main_menu"
+        android:src="@drawable/cool_ghosts"
         android:layout_marginBottom="80dp"/>
 
     <LinearLayout
@@ -29,7 +27,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="0dp">
 
-
         <Button
             android:layout_width="150dp"
             android:layout_height="60dp"
@@ -39,9 +36,9 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="60dp"
+            android:onClick="showHelpScreen"
             android:text="@string/help"/>
 
     </LinearLayout>
-
 
 </RelativeLayout>

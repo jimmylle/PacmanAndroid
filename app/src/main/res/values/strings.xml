@@ -5,11 +5,11 @@
     <string name="help">Help</string>
 
     <string name="howToPlayLabel">HOW TO PLAY</string>
-    <string name="howToPlay">Pacman, our hero, munches his way around the room, eating all of the
-        Pac-dots. However, life isn\'t easy for our young little hero. Along his journey, he faces
-        spooky Ghosts who will try to harm him. Avoid them at all costs. In each corner of the room
-        there is a "Power Pellet." When Pacman eats one, the Ghosts turn blue and Pacman
-        will be able to temporarily eat them as well.
+    <string name="howToPlay"> • Pacman, our hero, munches his way around the room, eating all of the
+        Pac-dots. However, life isn\'t easy for our young little hero.\n • Along his journey, he faces
+        spooky ghosts who will try to harm him. Avoid them at all costs.\n • In each corner of the room
+        there is a power pellet.\n• When Pacman eats a power pellet, he is temporarily able to eat
+        enemy ghosts.
     </string>
     <string name="controlsLabel">CONTROLS</string>
     <string name="controls">
