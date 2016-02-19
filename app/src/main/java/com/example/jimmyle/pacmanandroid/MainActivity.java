@@ -52,5 +52,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+        stopService(new Intent(this,BackgroundMusicService.class));
     }
 }
