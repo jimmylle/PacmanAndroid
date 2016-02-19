@@ -5,17 +5,12 @@
     <string name="help">Help</string>
 
     <string name="howToPlayLabel">HOW TO PLAY</string>
-    <string name="howToPlay"> • Pacman, our hero, munches his way around the room, eating all of the
-        Pac-dots. However, life isn\'t easy for our young little hero.\n • Along his journey, he faces
-        spooky ghosts who will try to harm him. Avoid them at all costs.\n • In each corner of the room
-        there is a power pellet.\n• When Pacman eats a power pellet, he is temporarily able to eat
-        enemy ghosts.
+    <string name="howToPlay">Pacman, our hero, munches his way around the room, eating all of the
+        dots. However, life isn\'t easy for our young little hero. Along his journey, he faces
+        spooky ghosts who will try to hurt him. Avoid them! In each corner of the map, there is a
+        power pellet. If Pacman eats a power pellet, he is temporarily gains the power to eat enemy
+        ghosts.
     </string>
     <string name="controlsLabel">CONTROLS</string>
-    <string name="controls">
-        Up: Swipe Up\n
-        Down: Swipe Down\n
-        Left: Swipe Left\n
-        Right: Swipe Right\n
-        Pause: Double Tap</string>
+    <string name="controls">"Up: Swipe Up\nDown: Swipe Down\nLeft: Swipe Left\nRight: Swipe Right\nPause: Double Tap  "</string>
 </resources>
