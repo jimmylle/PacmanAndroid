@@ -3,7 +3,6 @@ package com.example.jimmyle.pacmanandroid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().hide();
         Intent musicIntent = new Intent(this, BackgroundMusicService.class);
         startService(musicIntent);
     }
@@ -53,5 +49,11 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         stopService(new Intent(this,BackgroundMusicService.class));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startService(new Intent(this, BackgroundMusicService.class));
     }
 }
