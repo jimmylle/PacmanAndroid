@@ -13,4 +13,15 @@ public class HelpActivity extends Activity {
         startService(new Intent(this, BackgroundMusicService.class));
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopService(new Intent(this, BackgroundMusicService.class));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startService(new Intent(this, BackgroundMusicService.class));
+    }
 }
