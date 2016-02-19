@@ -32,3 +32,7 @@ Authors: Kevin Lee, Jimmy Le
 15. As a user, I can see a mute button so that I have the ability to mute the music.
 16. As a user, I can set different difficulties so that I can make it easier or harder for myself.
 17. As a user, I can change the colors of the game so I can set things to my color preference.
+
+## Project History
+```
+W16 | Kevin Lee, Jimmy Le | CS56 Conrad | 5PM Section
