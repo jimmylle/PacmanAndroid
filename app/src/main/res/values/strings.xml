@@ -12,5 +12,7 @@
         ghosts.
     </string>
     <string name="controlsLabel">CONTROLS</string>
-    <string name="controls">"Up: Swipe Up\nDown: Swipe Down\nLeft: Swipe Left\nRight: Swipe Right\nPause: Double Tap  "</string>
+    <string name="controls">"Up: Swipe Up\nDown: Swipe Down\nLeft: Swipe Left\nRight: Swipe Right\n
+        Pause: Double Tap  "
+    </string>
 </resources>
