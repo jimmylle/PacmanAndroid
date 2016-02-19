@@ -15,6 +15,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(helpIntent);
     }
 
+    // Method to start activity for Play button
+    public void showPlayScreen(View view) {
+        Intent playIntent = new Intent(this, PlayActivity.class);
+        startActivity(playIntent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
