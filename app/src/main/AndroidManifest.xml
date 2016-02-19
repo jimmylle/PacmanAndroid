@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HelpActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".HelpActivity"/>
+        <service android:name=".BackgroundMusicService"/>
     </application>
 
 </manifest>
