@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -20,14 +21,17 @@ public class InteractiveView extends View{
     private float yPosPacman = 5.0f;        // y-axis position of pacman
     private float xPosGhost = 5.0f;         // x-axis position of ghost
     private float yPosGhost = 5.0f;         // y-axis position of ghost
-    private float x1, x2, y1, y2;
-    private int direction;
+    private float x1, x2, y1, y2;           // Initial/Final positions of swipe
+    private float densityDPI;               // DPI of the screen
+    private int direction;                  // Direction of the swipe
 
     public InteractiveView(Context context) {
         super(context);
         loadBitmapImages();
         frameTicker = 1000/totalFrame;
         paint = new Paint();
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        densityDPI = metrics.density;
     }
 
     // Similar to java paintComponent method
@@ -57,11 +61,11 @@ public class InteractiveView extends View{
             xPosPacman += -5;
         }
         // Boundary checking
-        if (xPosPacman >= canvas.getWidth()) {
-            xPosPacman = canvas.getWidth();
+        if (xPosPacman >= canvas.getWidth()-(24 * densityDPI)) {
+            xPosPacman = canvas.getWidth()-(24 * densityDPI);
         }
-        if (yPosPacman >= canvas.getHeight()) {
-            yPosPacman = canvas.getHeight();
+        if (yPosPacman >= canvas.getHeight()-(24 * densityDPI)) {
+            yPosPacman = canvas.getHeight()-(24 * densityDPI);
         }
         if (xPosPacman <= 0) {
             xPosPacman = 0;
@@ -83,6 +87,7 @@ public class InteractiveView extends View{
         invalidate();
     }
 
+    // Method to get touch events
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -101,6 +106,9 @@ public class InteractiveView extends View{
         return true;
     }
 
+    // Calculates which direction the user swipes
+    // based on calculating the differences in
+    // initial position vs final position of the swipe
     private void calculateSwipeDirection() {
         float xDiff = (x2 - x1);
         float yDiff = (y2 - y1);
