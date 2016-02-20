@@ -17,10 +17,13 @@ public class InteractiveView extends View{
     private int totalFrame = 4;             // Total amount of frames fo each direction
     private int currentFrame = 0;           // Current frame to draw
     private long frameTicker;               // Current time frame has been drawn
-    private float xPosPacman = 5.0f;           // x-axis position of pacman
-    private float yPosPacman = 5.0f;           // y-axis position of pacman
-    private float xPosGhost = 5.0f;            //x-axis position of ghost
-    private float yPosGhost = 5.0f;            //y-axis position of ghost
+    private float xPosPacman = 5.0f;        // x-axis position of pacman
+    private float yPosPacman = 5.0f;        // y-axis position of pacman
+    private float xPosGhost = 5.0f;         // x-axis position of ghost
+    private float yPosGhost = 5.0f;         // y-axis position of ghost
+    private float x1, x2, y1, y2;
+    private int direction;
+    private Toast toast;
 
     public InteractiveView(Context context) {
         super(context);
@@ -29,6 +32,8 @@ public class InteractiveView extends View{
         paint = new Paint();
     }
 
+    // Similar to java paintComponent method
+    // Canvas is like the graphics object in java
     @Override
     public void onDraw(Canvas canvas) {
         // Set background color to black
@@ -38,7 +43,6 @@ public class InteractiveView extends View{
         canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
         canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
 
-        // Only moves in the x axis for now
         xPosPacman += 5.0f;
         yPosPacman += 5.0f;
         if (xPosPacman >= canvas.getWidth()) {
@@ -82,11 +86,15 @@ public class InteractiveView extends View{
     private void calculateSwipeDirection() {
         float xDiff = (x2 - x1);
         float yDiff = (y2 - y1);
+
         // Directions
         // 0 means going up
         // 1 means going right
         // 2 means going down
         // 3 means going left
+
+        // Checks which axis has the greater distance
+        // in order to see which direction the swipe is
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
             if (yDiff < 0) {
                 direction = 0;
