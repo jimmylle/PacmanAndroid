@@ -8,7 +8,7 @@ public class PlayActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = new MyView(this);
+        View view = new MapView(this);
         setContentView(view);
     }
 }
