@@ -12,11 +12,13 @@ public class InteractiveView extends View{
     private Paint paint;
     private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp, currentPacman;
     private Bitmap ghostBitmap;
-    private int totalFrame = 4;     // Total amount of frames fo each direction
-    private int currentFrame = 0;   // Current frame to draw
-    private long frameTicker;       // Current time frame has been drawn
-    private float xPos = 5;         // x-axis position of pacman
-    private float yPos = 5;         // y-axis position of pacman
+    private int totalFrame = 4;             // Total amount of frames fo each direction
+    private int currentFrame = 0;           // Current frame to draw
+    private long frameTicker;               // Current time frame has been drawn
+    private float xPosPacman = 5.0f;           // x-axis position of pacman
+    private float yPosPacman = 5.0f;           // y-axis position of pacman
+    private float xPosGhost = 5.0f;            //x-axis position of ghost
+    private float yPosGhost = 5.0f;            //y-axis position of ghost
 
     public InteractiveView(Context context) {
         super(context);
@@ -31,17 +33,27 @@ public class InteractiveView extends View{
         canvas.drawColor(Color.BLACK);
 
         update(System.currentTimeMillis());
-        canvas.drawBitmap(pacmanRight[currentFrame], xPos, yPos, paint);
-        canvas.drawBitmap(ghostBitmap, yPos, xPos, paint);
+        canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
+        canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
 
         // Only moves in the x axis for now
-        xPos += 5;
-        yPos += 5;
-        if (xPos >= canvas.getWidth()) {
-            xPos = 5.0f;
+        xPosPacman += 5.0f;
+        yPosPacman += 5.0f;
+        if (xPosPacman >= canvas.getWidth()) {
+            xPosPacman = 5.0f;
         }
-        if (yPos >= canvas.getHeight()) {
-            yPos = 5.0f;
+        if (yPosPacman >= canvas.getHeight()) {
+            yPosPacman = 5.0f;
+        }
+
+        xPosGhost += 5.0f;
+        if (xPosGhost >= canvas.getWidth()) {
+            xPosGhost = 5.0f;
+            yPosGhost += 50.0f;
+        }
+
+        if (yPosGhost >= canvas.getHeight()) {
+            yPosGhost = 5.0f;
         }
         // Similar to java repaint() method, forces the canvas to redraw
         invalidate();
