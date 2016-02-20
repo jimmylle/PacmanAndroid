@@ -8,16 +8,17 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-public class PacmanView extends View{
+public class InteractiveView extends View{
     private Paint paint;
     private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp, currentPacman;
+    private Bitmap ghostBitmap;
     private int totalFrame = 4;     // Total amount of frames fo each direction
     private int currentFrame = 0;   // Current frame to draw
     private long frameTicker;       // Current time frame has been drawn
     private float xPos = 5;         // x-axis position of pacman
     private float yPos = 5;         // y-axis position of pacman
 
-    public PacmanView(Context context) {
+    public InteractiveView(Context context) {
         super(context);
         loadBitmapImages();
         frameTicker = 1000/totalFrame;
@@ -31,6 +32,7 @@ public class PacmanView extends View{
 
         update(System.currentTimeMillis());
         canvas.drawBitmap(pacmanRight[currentFrame], xPos, yPos, paint);
+        canvas.drawBitmap(ghostBitmap, yPos, xPos, paint);
 
         // Only moves in the x axis for now
         xPos += 5;
@@ -87,6 +89,8 @@ public class PacmanView extends View{
         pacmanUp[1] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up2);
         pacmanUp[2] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up3);
         pacmanUp[3] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up);
+
+        ghostBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
     }
 
 }
