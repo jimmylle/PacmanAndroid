@@ -7,7 +7,7 @@
     <string name="howToPlayLabel">HOW TO PLAY</string>
     <string name="howToPlay">Pacman, our hero, munches his way around the map, eating all of the
         dots. However, life isn\'t easy for our young little hero. Along his journey, he faces
-        SPOOKY ghosts who will try to hurt him. Avoid them! In each corner of the map, there is a
+        spooky ghosts who will try to hurt him. Avoid them! In each corner of the map, there is a
         power pellet. If Pacman eats a power pellet, he is temporarily gains the power to eat enemy
         ghosts.
     </string>
