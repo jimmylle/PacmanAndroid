@@ -1,14 +1,11 @@
 package com.example.jimmyle.pacmanandroid;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    MediaPlayer player;
-
     // Method to start activity for Help button
     public void showHelpScreen(View view) {
         Intent helpIntent = new Intent(this, HelpActivity.class);
@@ -25,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //startService(new Intent(this, BackgroundMusicService.class));
-        player = MediaPlayer.create(this,R.raw.pacman_song);
-        player.setLooping(true);
-        player.setVolume(100,100);
-        player.start();
     }
 
 //    @Override
@@ -53,16 +45,4 @@ public class MainActivity extends AppCompatActivity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        stopService(new Intent(this,BackgroundMusicService.class));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        startService(new Intent(this, BackgroundMusicService.class));
-    }
 }

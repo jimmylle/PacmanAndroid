@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class PacmanView extends View{
@@ -43,6 +44,12 @@ public class PacmanView extends View{
         }
         // Similar to java repaint() method, forces the canvas to redraw
         invalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        return true;
     }
 
     // Check to see if we should update the current frame
