@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 public class InteractiveView extends View{
     private Paint paint;
@@ -23,7 +22,6 @@ public class InteractiveView extends View{
     private float yPosGhost = 5.0f;         // y-axis position of ghost
     private float x1, x2, y1, y2;
     private int direction;
-    private Toast toast;
 
     public InteractiveView(Context context) {
         super(context);
@@ -40,16 +38,36 @@ public class InteractiveView extends View{
         canvas.drawColor(Color.BLACK);
 
         update(System.currentTimeMillis());
-        canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
         canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
-
-        xPosPacman += 5.0f;
-        yPosPacman += 5.0f;
+        // Draws and moves the pacman based on direction
+        if(direction == 0) {
+            canvas.drawBitmap(pacmanUp[currentFrame], xPosPacman, yPosPacman, paint);
+            yPosPacman += -5;
+        }
+        else if (direction == 1) {
+            canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
+            xPosPacman += 5;
+        }
+        else if (direction == 2) {
+            canvas.drawBitmap(pacmanDown[currentFrame], xPosPacman, yPosPacman, paint);
+            yPosPacman += 5;
+        }
+        else if( direction == 3) {
+            canvas.drawBitmap(pacmanLeft[currentFrame], xPosPacman, yPosPacman, paint);
+            xPosPacman += -5;
+        }
+        // Boundary checking
         if (xPosPacman >= canvas.getWidth()) {
-            xPosPacman = 5.0f;
+            xPosPacman = canvas.getWidth();
         }
         if (yPosPacman >= canvas.getHeight()) {
-            yPosPacman = 5.0f;
+            yPosPacman = canvas.getHeight();
+        }
+        if (xPosPacman <= 0) {
+            xPosPacman = 0;
+        }
+        if (yPosPacman <= 0) {
+            yPosPacman = 0;
         }
 
         xPosGhost += 5.0f;
@@ -98,24 +116,19 @@ public class InteractiveView extends View{
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
             if (yDiff < 0) {
                 direction = 0;
-                toast = Toast.makeText(getContext(), "Going UP", Toast.LENGTH_SHORT);
             }
             else {
                 direction = 2;
-                toast = Toast.makeText(getContext(), "Going Down" ,Toast.LENGTH_SHORT);
             }
         }
         else {
             if (xDiff < 0) {
                 direction = 3;
-                toast = Toast.makeText(getContext(), "Going Left", Toast.LENGTH_SHORT);
             }
             else {
                 direction = 1;
-                toast = Toast.makeText(getContext(), "Going Right", Toast.LENGTH_SHORT);
             }
         }
-        toast.show();
     }
 
     // Check to see if we should update the current frame
@@ -133,6 +146,14 @@ public class InteractiveView extends View{
                 currentFrame = 0;
             }
         }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+        this.setMeasuredDimension(parentWidth, parentHeight);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     private void loadBitmapImages() {
