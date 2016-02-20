@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 public class InteractiveView extends View{
     private Paint paint;
@@ -62,8 +63,51 @@ public class InteractiveView extends View{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
+        switch (event.getAction()) {
+            case (MotionEvent.ACTION_DOWN): {
+                x1 = event.getX();
+                y1 = event.getY();
+                break;
+            }
+            case (MotionEvent.ACTION_UP): {
+                x2 = event.getX();
+                y2 = event.getY();
+                calculateSwipeDirection();
+                break;
+            }
+        }
         return true;
+    }
+
+    private void calculateSwipeDirection() {
+        float xDiff = (x2 - x1);
+        float yDiff = (y2 - y1);
+        // Directions
+        // 0 means going up
+        // 1 means going right
+        // 2 means going down
+        // 3 means going left
+        if (Math.abs(yDiff) > Math.abs(xDiff)) {
+            if (yDiff < 0) {
+                direction = 0;
+                toast = Toast.makeText(getContext(), "Going UP", Toast.LENGTH_SHORT);
+            }
+            else {
+                direction = 2;
+                toast = Toast.makeText(getContext(), "Going Down" ,Toast.LENGTH_SHORT);
+            }
+        }
+        else {
+            if (xDiff < 0) {
+                direction = 3;
+                toast = Toast.makeText(getContext(), "Going Left", Toast.LENGTH_SHORT);
+            }
+            else {
+                direction = 1;
+                toast = Toast.makeText(getContext(), "Going Right", Toast.LENGTH_SHORT);
+            }
+        }
+        toast.show();
     }
 
     // Check to see if we should update the current frame
