@@ -8,7 +8,7 @@ public class PlayActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = new PacmanView(this);
+        View view = new InteractiveView(this);
         setContentView(view);
     }
 }
