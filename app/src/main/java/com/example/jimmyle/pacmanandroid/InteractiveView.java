@@ -1,6 +1,8 @@
 package com.example.jimmyle.pacmanandroid;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,7 +11,6 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -32,7 +33,6 @@ public class InteractiveView extends View {
     private int screenHeight;
     public static int LONG_PRESS_TIME = 500; // Time in miliseconds
     final Handler handler = new Handler();
-    private Toast toast;
 
     public InteractiveView(Context context) {
         super(context);
@@ -101,8 +101,8 @@ public class InteractiveView extends View {
     Runnable longPressed = new Runnable() {
         public void run() {
             Log.i("info", "LongPress");
-            toast = Toast.makeText(getContext(), "Long Clicked", Toast.LENGTH_SHORT);
-            toast.show();
+            Intent pauseIntent = new Intent(getContext(), PauseActivity.class);
+            getContext().startActivity(pauseIntent);
         }
     };
 
@@ -138,28 +138,19 @@ public class InteractiveView extends View {
         float yDiff = (y2 - y1);
 
         // Directions
-        // 0 means going up
-        // 1 means going right
-        // 2 means going down
-        // 3 means going left
+        // 0 = Going Up
+        // 1 = Going Right
+        // 2 = Going Down
+        // 3 = Going Left
 
-        // Checks which axis has the greater distance
-        // in order to see which direction the swipe is
+        // Checks which axis has the greater distance in order to determine direction
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
-            if (yDiff < 0) {
-                direction = 0;
-            }
-            else if (yDiff > 0){
-                direction = 2;
-            }
+            if (yDiff < 0) { direction = 0; }
+            else if (yDiff > 0) { direction = 2; }
         }
         else {
-            if (xDiff < 0) {
-                direction = 3;
-            }
-            else if (xDiff > 0){
-                direction = 1;
-            }
+            if (xDiff < 0) { direction = 3; }
+            else if (xDiff > 0) { direction = 1; }
         }
     }
 
@@ -193,7 +184,7 @@ public class InteractiveView extends View {
         int blockSize = screenWidth/20;
         pacmanRight = new Bitmap[totalFrame];
         pacmanRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(),R.drawable.pacman_right1), blockSize ,blockSize, false);
+                getResources(),R.drawable.pacman_right1), blockSize, blockSize, false);
         pacmanRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.pacman_right2), blockSize, blockSize, false);
         pacmanRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
