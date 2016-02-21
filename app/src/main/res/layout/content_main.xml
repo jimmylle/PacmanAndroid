@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignBottom="@+id/MainMenuImage"
-        android:layout_marginBottom="180dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginLeft="35dp">
 
 
@@ -34,6 +34,13 @@
             android:onClick="showPlayScreen"
             android:text="@string/play"
             android:layout_marginBottom="5dp"/>
+
+        <Button
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/highScoreLabel"
+            android:layout_marginBottom="5dp"/>
+
 
         <Button
             android:layout_width="175dp"
