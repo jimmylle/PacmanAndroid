@@ -17,4 +17,5 @@
         "Pause: Hold Screen    "
     </string>
     <string name="highScoreLabel">High Scores</string>
+    <string name="resumeLabel">Resume</string>
 </resources>
