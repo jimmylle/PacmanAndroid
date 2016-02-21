@@ -1,6 +1,5 @@
 package com.example.jimmyle.pacmanandroid;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,21 +12,19 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 public class InteractiveView extends View {
     private Paint paint;
-    private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp;
+    private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp, currentPacman;
     private Bitmap ghostBitmap;
     private int totalFrame = 4;             // Total amount of frames fo each direction
     private int currentFrame = 0;           // Current frame to draw
     private long frameTicker;               // Current time frame has been drawn
-    private float xPosPacman = 5.0f;        // x-axis position of pacman
-    private float yPosPacman = 5.0f;        // y-axis position of pacman
+    private int xPosPacman;                 // x-axis position of pacman
+    private int yPosPacman;                 // y-axis position of pacman
     private float xPosGhost = 5.0f;         // x-axis position of ghost
     private float yPosGhost = 5.0f;         // y-axis position of ghost
     private float x1, x2, y1, y2;           // Initial/Final positions of swipe
-    private float densityDPI;               // DPI of the screen
     private int direction = 4;              // Direction of the swipe, initial direction is right
     private int nextDirection = 4;          // Buffer for the next direction you choose
     private int screenWidth;                // Width of the phone screen
@@ -40,10 +37,9 @@ public class InteractiveView extends View {
         frameTicker = 1000/totalFrame;
         paint = new Paint();
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        densityDPI = metrics.density;
         screenWidth = metrics.widthPixels;
         blockSize = screenWidth/17;
-        blockSize = (blockSize / 4) * 4;
+        blockSize = (blockSize / 5) * 5;
         xPosPacman = 8 * blockSize;
         yPosPacman = 13 * blockSize;
         loadBitmapImages();
@@ -88,19 +84,26 @@ public class InteractiveView extends View {
             }
         }
 
+        if (xPosPacman < 0) {
+            xPosPacman = blockSize * 17;
+        }
+        if (xPosPacman > blockSize * 17) {
+            xPosPacman = 0;
+        }
+
         // Depending on the direction, draw the appropriate sprite image
         if (direction == 0) {
             canvas.drawBitmap(pacmanUp[currentFrame], xPosPacman, yPosPacman, paint);
-            yPosPacman += -blockSize/4;
+            yPosPacman += -blockSize/15;
         } else if (direction == 1) {
             canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
-            xPosPacman += blockSize/4;
+            xPosPacman += blockSize/15;
         } else if (direction == 2) {
             canvas.drawBitmap(pacmanDown[currentFrame], xPosPacman, yPosPacman, paint);
-            yPosPacman += blockSize/4;
+            yPosPacman += blockSize/15;
         } else if (direction == 3) {
             canvas.drawBitmap(pacmanLeft[currentFrame], xPosPacman, yPosPacman, paint);
-            xPosPacman += -blockSize/4;
+            xPosPacman += -blockSize/15;
         } else {
             canvas.drawBitmap(pacmanDown[0], xPosPacman, yPosPacman, paint);
         }
@@ -208,7 +211,7 @@ public class InteractiveView extends View {
     private void loadBitmapImages() {
         // Add bitmap images of pacman facing right
         int spriteSize = screenWidth/17;
-        spriteSize = (spriteSize / 4) * 4;
+        spriteSize = (spriteSize / 5) * 5;
         pacmanRight = new Bitmap[totalFrame];
         pacmanRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(),R.drawable.pacman_right1), spriteSize, spriteSize, false);
@@ -252,7 +255,6 @@ public class InteractiveView extends View {
         ghostBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ghost), spriteSize, spriteSize, false);
     }
-
 
     final short leveldata1[][] = new short[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
