@@ -24,14 +24,18 @@ public class InteractiveView extends View{
     private float x1, x2, y1, y2;           // Initial/Final positions of swipe
     private float densityDPI;               // DPI of the screen
     private int direction;                  // Direction of the swipe
+    private int screenWidth;
+    private int screenHeight;
 
     public InteractiveView(Context context) {
         super(context);
-        loadBitmapImages();
         frameTicker = 1000/totalFrame;
         paint = new Paint();
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         densityDPI = metrics.density;
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
+        loadBitmapImages();
     }
 
     // Similar to java paintComponent method
@@ -39,7 +43,7 @@ public class InteractiveView extends View{
     @Override
     public void onDraw(Canvas canvas) {
         // Set background color to black
-        canvas.drawColor(Color.BLACK);
+        canvas.drawColor(Color.TRANSPARENT);
 
         update(System.currentTimeMillis());
         canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
@@ -61,11 +65,11 @@ public class InteractiveView extends View{
             xPosPacman += -5;
         }
         // Boundary checking
-        if (xPosPacman >= canvas.getWidth()-(24 * densityDPI)) {
-            xPosPacman = canvas.getWidth()-(24 * densityDPI);
+        if (xPosPacman >= canvas.getWidth() - (screenWidth/20)) {
+            xPosPacman = canvas.getWidth() - (screenWidth/20);
         }
-        if (yPosPacman >= canvas.getHeight()-(24 * densityDPI)) {
-            yPosPacman = canvas.getHeight()-(24 * densityDPI);
+        if (yPosPacman >= canvas.getHeight() -(screenWidth/20)) {
+            yPosPacman = canvas.getHeight() -(screenWidth/20);
         }
         if (xPosPacman <= 0) {
             xPosPacman = 0;
@@ -166,31 +170,49 @@ public class InteractiveView extends View{
 
     private void loadBitmapImages() {
         // Add bitmap images of pacman facing right
+        int blockSize = screenWidth/20;
         pacmanRight = new Bitmap[totalFrame];
-        pacmanRight[0] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_right1);
-        pacmanRight[1] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_right2);
-        pacmanRight[2] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_right3);
-        pacmanRight[3] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_right);
+        pacmanRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(),R.drawable.pacman_right1), blockSize ,blockSize, false);
+        pacmanRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_right2), blockSize, blockSize, false);
+        pacmanRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_right3), blockSize, blockSize, false);
+        pacmanRight[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_right), blockSize, blockSize, false);
         // Add bitmap images of pacman facing down
         pacmanDown = new Bitmap[totalFrame];
-        pacmanDown[0] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_down1);
-        pacmanDown[1] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_down2);
-        pacmanDown[2] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_down3);
-        pacmanDown[3] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_down);
+        pacmanDown[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_down1), blockSize, blockSize, false);
+        pacmanDown[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_down2), blockSize, blockSize, false);
+        pacmanDown[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_down3), blockSize, blockSize, false);
+        pacmanDown[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_down), blockSize, blockSize, false);
         // Add bitmap images of pacman facing left
         pacmanLeft = new Bitmap[totalFrame];
-        pacmanLeft[0] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_left1);
-        pacmanLeft[1] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_left2);
-        pacmanLeft[2] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_left3);
-        pacmanLeft[3] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_left);
+        pacmanLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_left1), blockSize, blockSize, false);
+        pacmanLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_left2), blockSize, blockSize, false);
+        pacmanLeft[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_left3), blockSize, blockSize, false);
+        pacmanLeft[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_left), blockSize, blockSize, false);
         // Add bitmap images of pacman facing up
         pacmanUp = new Bitmap[totalFrame];
-        pacmanUp[0] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up1);
-        pacmanUp[1] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up2);
-        pacmanUp[2] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up3);
-        pacmanUp[3] = BitmapFactory.decodeResource(getResources(),R.drawable.pacman_up);
+        pacmanUp[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_up1), blockSize, blockSize, false);
+        pacmanUp[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_up2), blockSize, blockSize, false);
+        pacmanUp[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_up3), blockSize, blockSize, false);
+        pacmanUp[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.pacman_up), blockSize, blockSize, false);
 
-        ghostBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
+        ghostBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ghost), blockSize, blockSize, false);
     }
 
 }
