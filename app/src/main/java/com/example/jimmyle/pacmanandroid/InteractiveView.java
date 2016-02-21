@@ -72,7 +72,7 @@ public class InteractiveView extends View {
             if (!((nextDirection == 3 && (ch & 1) != 0) ||
                     (nextDirection == 1 && (ch & 4) != 0) ||
                     (nextDirection == 0 && (ch & 2) != 0) ||
-                    (nextDirection == 4 && (ch & 8) != 0))) {
+                    (nextDirection == 2 && (ch & 8) != 0))) {
                 direction = nextDirection;
             }
 
