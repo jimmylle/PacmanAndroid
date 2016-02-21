@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class InteractiveView extends View {
     private Paint paint;
-    private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp, currentPacman;
+    private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp;
     private Bitmap ghostBitmap;
     private int totalFrame = 4;             // Total amount of frames fo each direction
     private int currentFrame = 0;           // Current frame to draw
@@ -28,10 +28,11 @@ public class InteractiveView extends View {
     private float yPosGhost = 5.0f;         // y-axis position of ghost
     private float x1, x2, y1, y2;           // Initial/Final positions of swipe
     private float densityDPI;               // DPI of the screen
-    private int direction;                  // Direction of the swipe
-    private int screenWidth;
-    private int screenHeight;
-    public static int LONG_PRESS_TIME = 500; // Time in miliseconds
+    private int direction = 4;              // Direction of the swipe, initial direction is right
+    private int nextDirection = 4;          // Buffer for the next direction you choose
+    private int screenWidth;                // Width of the phone screen
+    private int blockSize;                  // Size of a block on the map
+    public static int LONG_PRESS_TIME = 500; // Time in milliseconds
     final Handler handler = new Handler();
 
     public InteractiveView(Context context) {
@@ -41,7 +42,10 @@ public class InteractiveView extends View {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         densityDPI = metrics.density;
         screenWidth = metrics.widthPixels;
-        screenHeight = metrics.heightPixels;
+        blockSize = screenWidth/17;
+        blockSize = (blockSize / 4) * 4;
+        xPosPacman = 8 * blockSize;
+        yPosPacman = 13 * blockSize;
         loadBitmapImages();
     }
 
@@ -52,37 +56,53 @@ public class InteractiveView extends View {
         // Set background color to black
         canvas.drawColor(Color.TRANSPARENT);
 
-        update(System.currentTimeMillis());
+        updateFrame(System.currentTimeMillis());
         canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
+
         // Draws and moves the pacman based on direction
-        if(direction == 0) {
+        move(canvas);
+        // Similar to java repaint() method, forces the canvas to redraw
+        invalidate();
+    }
+
+    // Updates the character sprite and handles collisions
+    public void move(Canvas canvas) {
+        short ch;
+
+        if ( (xPosPacman % blockSize == 0) && (yPosPacman  % blockSize == 0 ) ) {
+
+            ch = leveldata1[yPosPacman / blockSize][xPosPacman / blockSize];
+
+            if (!((nextDirection == 3 && (ch & 1) != 0) ||
+                    (nextDirection == 1 && (ch & 4) != 0) ||
+                    (nextDirection == 0 && (ch & 2) != 0) ||
+                    (nextDirection == 4 && (ch & 8) != 0))) {
+                direction = nextDirection;
+            }
+
+            if ((direction == 3 && (ch & 1) != 0) ||
+                    (direction == 1 && (ch & 4) != 0) ||
+                    (direction == 0 && (ch & 2) != 0) ||
+                    (direction == 2 && (ch & 8) != 0)) {
+                direction = 4;
+            }
+        }
+
+        // Depending on the direction, draw the appropriate sprite image
+        if (direction == 0) {
             canvas.drawBitmap(pacmanUp[currentFrame], xPosPacman, yPosPacman, paint);
-            yPosPacman += -5;
-        }
-        else if (direction == 1) {
+            yPosPacman += -blockSize/4;
+        } else if (direction == 1) {
             canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
-            xPosPacman += 5;
-        }
-        else if (direction == 2) {
+            xPosPacman += blockSize/4;
+        } else if (direction == 2) {
             canvas.drawBitmap(pacmanDown[currentFrame], xPosPacman, yPosPacman, paint);
-            yPosPacman += 5;
-        }
-        else if( direction == 3) {
+            yPosPacman += blockSize/4;
+        } else if (direction == 3) {
             canvas.drawBitmap(pacmanLeft[currentFrame], xPosPacman, yPosPacman, paint);
-            xPosPacman += -5;
-        }
-        // Boundary checking
-        if (xPosPacman >= canvas.getWidth() - (screenWidth/20)) {
-            xPosPacman = canvas.getWidth() - (screenWidth/20);
-        }
-        if (yPosPacman >= canvas.getHeight() -(screenWidth/20)) {
-            yPosPacman = canvas.getHeight() -(screenWidth/20);
-        }
-        if (xPosPacman <= 0) {
-            xPosPacman = 0;
-        }
-        if (yPosPacman <= 0) {
-            yPosPacman = 0;
+            xPosPacman += -blockSize/4;
+        } else {
+            canvas.drawBitmap(pacmanDown[0], xPosPacman, yPosPacman, paint);
         }
 
         xPosGhost += 5.0f;
@@ -94,8 +114,6 @@ public class InteractiveView extends View {
         if (yPosGhost >= canvas.getHeight()) {
             yPosGhost = 5.0f;
         }
-        // Similar to java repaint() method, forces the canvas to redraw
-        invalidate();
     }
 
     Runnable longPressed = new Runnable() {
@@ -106,7 +124,7 @@ public class InteractiveView extends View {
         }
     };
 
-//     Method to get touch events
+    // Method to get touch events
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -138,26 +156,34 @@ public class InteractiveView extends View {
         float yDiff = (y2 - y1);
 
         // Directions
-        // 0 = Going Up
-        // 1 = Going Right
-        // 2 = Going Down
-        // 3 = Going Left
+        // 0 means going up
+        // 1 means going right
+        // 2 means going down
+        // 3 means going left
+        // 4 means stop moving, look at move function
 
-        // Checks which axis has the greater distance in order to determine direction
+        // Checks which axis has the greater distance
+        // in order to see which direction the swipe is
+        // going to be (buffering of direction)
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
-            if (yDiff < 0) { direction = 0; }
-            else if (yDiff > 0) { direction = 2; }
-        }
-        else {
-            if (xDiff < 0) { direction = 3; }
-            else if (xDiff > 0) { direction = 1; }
+            if (yDiff < 0) {
+                nextDirection = 0;
+            } else if (yDiff > 0) {
+                nextDirection = 2;
+            }
+        } else {
+            if (xDiff < 0) {
+                nextDirection = 3;
+            } else if (xDiff > 0) {
+                nextDirection = 1;
+            }
         }
     }
 
     // Check to see if we should update the current frame
     // based on time passed so the animation won't be too
     // quick and look bad
-    private void update(long gameTime) {
+    private void updateFrame(long gameTime) {
         // If enough time has passed go to next frame
         if (gameTime > frameTicker + (totalFrame * 30)) {
             frameTicker = gameTime;
@@ -181,48 +207,71 @@ public class InteractiveView extends View {
 
     private void loadBitmapImages() {
         // Add bitmap images of pacman facing right
-        int blockSize = screenWidth/20;
+        int spriteSize = screenWidth/17;
+        spriteSize = (spriteSize / 4) * 4;
         pacmanRight = new Bitmap[totalFrame];
         pacmanRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(),R.drawable.pacman_right1), blockSize, blockSize, false);
+                getResources(),R.drawable.pacman_right1), spriteSize, spriteSize, false);
         pacmanRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_right2), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_right2), spriteSize, spriteSize, false);
         pacmanRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_right3), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_right3), spriteSize, spriteSize, false);
         pacmanRight[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_right), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_right), spriteSize, spriteSize, false);
         // Add bitmap images of pacman facing down
         pacmanDown = new Bitmap[totalFrame];
         pacmanDown[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_down1), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_down1), spriteSize, spriteSize, false);
         pacmanDown[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_down2), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_down2), spriteSize, spriteSize, false);
         pacmanDown[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_down3), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_down3), spriteSize, spriteSize, false);
         pacmanDown[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_down), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_down), spriteSize, spriteSize, false);
         // Add bitmap images of pacman facing left
         pacmanLeft = new Bitmap[totalFrame];
         pacmanLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_left1), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_left1), spriteSize, spriteSize, false);
         pacmanLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_left2), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_left2), spriteSize, spriteSize, false);
         pacmanLeft[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_left3), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_left3), spriteSize, spriteSize, false);
         pacmanLeft[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_left), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_left), spriteSize, spriteSize, false);
         // Add bitmap images of pacman facing up
         pacmanUp = new Bitmap[totalFrame];
         pacmanUp[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_up1), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_up1), spriteSize, spriteSize, false);
         pacmanUp[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_up2), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_up2), spriteSize, spriteSize, false);
         pacmanUp[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_up3), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_up3), spriteSize, spriteSize, false);
         pacmanUp[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.pacman_up), blockSize, blockSize, false);
+                getResources(), R.drawable.pacman_up), spriteSize, spriteSize, false);
 
         ghostBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ghost), blockSize, blockSize, false);
+                getResources(), R.drawable.ghost), spriteSize, spriteSize, false);
     }
+
+
+    final short leveldata1[][] = new short[][]{
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {19, 26, 26, 18, 26, 26, 26, 22, 0, 19, 26, 26, 26, 18, 26, 26, 22},
+            {21, 0, 0, 21, 0, 0, 0, 21, 0, 21, 0, 0, 0, 21, 0, 0, 21},
+            {17, 26, 26, 16, 26, 18, 26, 24, 26, 24, 26, 18, 26, 16, 26, 26, 20},
+            {25, 26, 26, 20, 0, 25, 26, 22, 0, 19, 26, 28, 0, 17, 26, 26, 28},
+            {0, 0, 0, 21, 0, 0, 0, 21, 0, 21, 0, 0, 0, 21, 0, 0, 0},
+            {0, 0, 0, 21, 0, 19, 26, 24, 26, 24, 26, 22, 0, 21, 0, 0, 0},
+            {26, 26, 26, 16, 26, 20, 0, 0, 0, 0, 0, 17, 26, 16, 26, 26, 26},
+            {0, 0, 0, 21, 0, 17, 26, 26, 26, 26, 26, 20, 0, 21, 0, 0, 0},
+            {0, 0, 0, 21, 0, 21, 0, 0, 0, 0, 0, 21, 0, 21, 0, 0, 0},
+            {19, 26, 26, 16, 26, 24, 26, 22, 0, 19, 26, 24, 26, 16, 26, 26, 22},
+            {21, 0, 0, 21, 0, 0, 0, 21, 0, 21, 0, 0, 0, 21, 0, 0, 21},
+            {25, 22, 0, 21, 0, 0, 0, 17, 2, 20, 0, 0, 0, 21, 0, 19, 28}, // "2" in this line stands for where the pacman spawn
+            {0, 21, 0, 17, 26, 26, 18, 24, 24, 24, 18, 26, 26, 20, 0, 21, 0},
+            {19, 24, 26, 28, 0, 0, 25, 18, 26, 18, 28, 0, 0, 25, 26, 24, 22},
+            {21, 0, 0, 0, 0, 0, 0, 21, 0, 21, 0, 0, 0, 0, 0, 0, 21},
+            {25, 26, 26, 26, 26, 26, 26, 24, 26, 24, 26, 26, 26, 26, 26, 26, 28},
+    };
 }
