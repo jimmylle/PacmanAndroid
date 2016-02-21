@@ -16,7 +16,7 @@ Authors: Kevin Lee, Jimmy Le
 
 ## User Stories (Implementation Tasks/Goals):
 1. ~~As a user, I can see the introduction screen when I open the app so that I can know it has sucessfully opened.~~ (100pts)
-2. ~~As a user, I can see a play button and a help button so that I can click on them.~~ (50pts)
+2. ~~As a user, I can see a play button and a help button and a high score button so that I can click on them.~~ (50pts)
 3. ~~As a user, I can click on the help button so that I can know how to play.~~ (50pts)
 4. ~~As a user, I can click on the play button so that I can start the actual game.~~ (50pts)
 5. ~~As a user, I can see the game board so that I know the game is about to start.~~ (150pts)
