@@ -6,11 +6,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
-public class InteractiveView extends View{
+public class InteractiveView extends View {
     private Paint paint;
     private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp, currentPacman;
     private Bitmap ghostBitmap;
@@ -24,6 +28,9 @@ public class InteractiveView extends View{
     private float x1, x2, y1, y2;           // Initial/Final positions of swipe
     private float densityDPI;               // DPI of the screen
     private int direction;                  // Direction of the swipe
+    public static int LONG_PRESS_TIME = 500; // Time in miliseconds
+    final Handler handler = new Handler();
+    private Toast toast;
 
     public InteractiveView(Context context) {
         super(context);
@@ -39,7 +46,7 @@ public class InteractiveView extends View{
     @Override
     public void onDraw(Canvas canvas) {
         // Set background color to black
-        canvas.drawColor(Color.BLACK);
+        canvas.drawColor(Color.TRANSPARENT);
 
         update(System.currentTimeMillis());
         canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
@@ -87,20 +94,33 @@ public class InteractiveView extends View{
         invalidate();
     }
 
-    // Method to get touch events
+    Runnable longPressed = new Runnable() {
+        public void run() {
+            Log.i("info", "LongPress");
+            toast = Toast.makeText(getContext(), "Long Clicked", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    };
+
+//     Method to get touch events
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case (MotionEvent.ACTION_DOWN): {
                 x1 = event.getX();
                 y1 = event.getY();
+                handler.postDelayed(longPressed, LONG_PRESS_TIME);
                 break;
             }
             case (MotionEvent.ACTION_UP): {
                 x2 = event.getX();
                 y2 = event.getY();
                 calculateSwipeDirection();
+                handler.removeCallbacks(longPressed);
                 break;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                handler.removeCallbacks(longPressed);
             }
         }
         return true;
@@ -125,7 +145,7 @@ public class InteractiveView extends View{
             if (yDiff < 0) {
                 direction = 0;
             }
-            else {
+            else if (yDiff > 0){
                 direction = 2;
             }
         }
@@ -133,7 +153,7 @@ public class InteractiveView extends View{
             if (xDiff < 0) {
                 direction = 3;
             }
-            else {
+            else if (xDiff > 0){
                 direction = 1;
             }
         }
@@ -192,5 +212,4 @@ public class InteractiveView extends View{
 
         ghostBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ghost);
     }
-
 }
