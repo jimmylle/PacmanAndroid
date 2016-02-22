@@ -37,6 +37,7 @@ public class InteractiveView extends View {
         super(context);
         frameTicker = 1000/totalFrame;
         paint = new Paint();
+        paint.setColor(Color.WHITE);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         screenWidth = metrics.widthPixels;
         blockSize = screenWidth/17;
@@ -58,6 +59,8 @@ public class InteractiveView extends View {
 
         // Moves the pacman based on his direction
         move(canvas);
+        // Draw the pellets
+        drawPellets(canvas);
         // Similar to java repaint() method, forces the canvas to redraw
         invalidate();
     }
@@ -78,6 +81,13 @@ public class InteractiveView extends View {
             // Is used to find the number in the level array in order to
             // check wall placement, pellet placement, and candy placement
             ch = leveldata1[yPosPacman / blockSize][xPosPacman / blockSize];
+
+
+            // If there is a pellet, eat it
+            if ((ch & 16) != 0) {
+                // Toggle pellet so it won't be drawn anymore
+                leveldata1[yPosPacman / blockSize][xPosPacman / blockSize] = (short) (ch ^ 16);
+            }
 
             // Checks for direction buffering
             if (!((nextDirection == 3 && (ch & 1) != 0) ||
@@ -141,6 +151,21 @@ public class InteractiveView extends View {
             default:
                 canvas.drawBitmap(pacmanDown[currentFrame], xPosPacman, yPosPacman, paint);
                 break;
+        }
+    }
+
+    // Method that draws pellets and updates them when eaten
+    public void drawPellets(Canvas canvas) {
+        float x;
+        float y;
+        for (int i = 0; i < 18; i++) {
+            for (int j = 0; j < 17; j++) {
+                x = j * blockSize;
+                y = i * blockSize;
+                // Draws pellet in the middle of a block
+                if ((leveldata1[i][j] & 16) != 0)
+                    canvas.drawRect(x + (blockSize/4), y + (blockSize/4), x + (3*blockSize/4),y + (3*blockSize/4) ,paint);
+            }
         }
     }
 
