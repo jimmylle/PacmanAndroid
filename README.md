@@ -5,14 +5,17 @@ Authors: Kevin Lee, Jimmy Le
 
 ## Running the game
 1. Load the project on Android Studio
-2. Press "Run" (Shift + F10 on Windows)
-3. Choose the device you wish to run it on such as your phone or the Android Studio emulator
-4. The game should run on your device
+2. Connect your device to your computer using a usb cable
+3. Press "Run" (Shift + F10 on Windows)
+4. Choose the device you wish to run it on such as your phone or the Android Studio emulator
+5. The game should run on your device
 
 ## Current progress
 * Title screen
-* Two buttons on the screen (Play and Help)
+* Three buttons on the screen (New Game, High Scores, and Help)
+* New Game button takes you to a screen with the map layout and pacman
 * Help button leads to the help screen
+* You can move pacman around by swiping in the direction you wish to go
 
 ## User Stories (Implementation Tasks/Goals):
 1. ~~As a user, I can see the introduction screen when I open the app so that I can know it has sucessfully opened.~~ (100pts)
