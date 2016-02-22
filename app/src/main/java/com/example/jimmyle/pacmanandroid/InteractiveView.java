@@ -66,8 +66,17 @@ public class InteractiveView extends View {
     public void move(Canvas canvas) {
         short ch;
 
-        if ( (xPosPacman % blockSize == 0) && (yPosPacman  % blockSize == 0 ) ) {
+        // Check if xPos and yPos of pacman is both a multiple of block size
+        if ( (xPosPacman % blockSize == 0) && (yPosPacman  % blockSize == 0) ) {
 
+            // When pacman goes through tunnel on
+            // the right reappear at left tunnel
+            if (xPosPacman >= blockSize * 17) {
+                xPosPacman = 0;
+            }
+
+            // Is used to find the number in the level array in order to
+            // check wall placement, pellet placement, and candy placement
             ch = leveldata1[yPosPacman / blockSize][xPosPacman / blockSize];
 
             // Checks for direction buffering
@@ -87,16 +96,15 @@ public class InteractiveView extends View {
             }
         }
 
+        // When pacman goes through tunnel on
+        // the left reappear at right tunnel
         if (xPosPacman < 0) {
             xPosPacman = blockSize * 17;
-        }
-        if (xPosPacman > blockSize * 17) {
-            xPosPacman = 0;
         }
 
         drawPacman(canvas);
 
-        // Depending on the direction move the position of pacan
+        // Depending on the direction move the position of pacman
         if (direction == 0) {
             yPosPacman += -blockSize/15;
         } else if (direction == 1) {
@@ -289,8 +297,8 @@ public class InteractiveView extends View {
             {0, 0, 0, 21, 0, 21, 0, 0, 0, 0, 0, 21, 0, 21, 0, 0, 0},
             {19, 26, 26, 16, 26, 24, 26, 22, 0, 19, 26, 24, 26, 16, 26, 26, 22},
             {21, 0, 0, 21, 0, 0, 0, 21, 0, 21, 0, 0, 0, 21, 0, 0, 21},
-            {25, 22, 0, 21, 0, 0, 0, 17, 2, 20, 0, 0, 0, 21, 0, 19, 28}, // "2" in this line stands for where the pacman spawn
-            {0, 21, 0, 17, 26, 26, 18, 24, 24, 24, 18, 26, 26, 20, 0, 21, 0},
+            {25, 22, 0, 21, 0, 0, 0, 17, 2, 20, 0, 0, 0, 21, 0, 19, 28}, // "2" in this line is for
+            {0, 21, 0, 17, 26, 26, 18, 24, 24, 24, 18, 26, 26, 20, 0, 21, 0}, // pacman's spawn
             {19, 24, 26, 28, 0, 0, 25, 18, 26, 18, 28, 0, 0, 25, 26, 24, 22},
             {21, 0, 0, 0, 0, 0, 0, 21, 0, 21, 0, 0, 0, 0, 0, 0, 21},
             {25, 26, 26, 26, 26, 26, 26, 24, 26, 24, 26, 26, 26, 26, 26, 26, 28},
