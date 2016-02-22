@@ -15,7 +15,7 @@ import android.view.View;
 
 public class InteractiveView extends View {
     private Paint paint;
-    private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp, currentPacman;
+    private Bitmap[] pacmanRight, pacmanDown, pacmanLeft, pacmanUp;
     private Bitmap ghostBitmap;
     private int totalFrame = 4;             // Total amount of frames fo each direction
     private int currentFrame = 0;           // Current frame to draw
@@ -27,6 +27,7 @@ public class InteractiveView extends View {
     private float x1, x2, y1, y2;           // Initial/Final positions of swipe
     private int direction = 4;              // Direction of the swipe, initial direction is right
     private int nextDirection = 4;          // Buffer for the next direction you choose
+    private int viewDirection = 2;          // Direction that pacman is facing
     private int screenWidth;                // Width of the phone screen
     private int blockSize;                  // Size of a block on the map
     public static int LONG_PRESS_TIME = 500; // Time in milliseconds
@@ -55,7 +56,7 @@ public class InteractiveView extends View {
         updateFrame(System.currentTimeMillis());
         canvas.drawBitmap(ghostBitmap, xPosGhost, yPosGhost, paint);
 
-        // Draws and moves the pacman based on direction
+        // Moves the pacman based on his direction
         move(canvas);
         // Similar to java repaint() method, forces the canvas to redraw
         invalidate();
@@ -69,13 +70,15 @@ public class InteractiveView extends View {
 
             ch = leveldata1[yPosPacman / blockSize][xPosPacman / blockSize];
 
+            // Checks for direction buffering
             if (!((nextDirection == 3 && (ch & 1) != 0) ||
                     (nextDirection == 1 && (ch & 4) != 0) ||
                     (nextDirection == 0 && (ch & 2) != 0) ||
                     (nextDirection == 2 && (ch & 8) != 0))) {
-                direction = nextDirection;
+                viewDirection = direction = nextDirection;
             }
 
+            // Checks for wall collisions
             if ((direction == 3 && (ch & 1) != 0) ||
                     (direction == 1 && (ch & 4) != 0) ||
                     (direction == 0 && (ch & 2) != 0) ||
@@ -91,21 +94,17 @@ public class InteractiveView extends View {
             xPosPacman = 0;
         }
 
-        // Depending on the direction, draw the appropriate sprite image
+        drawPacman(canvas);
+
+        // Depending on the direction move the position of pacan
         if (direction == 0) {
-            canvas.drawBitmap(pacmanUp[currentFrame], xPosPacman, yPosPacman, paint);
             yPosPacman += -blockSize/15;
         } else if (direction == 1) {
-            canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
             xPosPacman += blockSize/15;
         } else if (direction == 2) {
-            canvas.drawBitmap(pacmanDown[currentFrame], xPosPacman, yPosPacman, paint);
             yPosPacman += blockSize/15;
         } else if (direction == 3) {
-            canvas.drawBitmap(pacmanLeft[currentFrame], xPosPacman, yPosPacman, paint);
             xPosPacman += -blockSize/15;
-        } else {
-            canvas.drawBitmap(pacmanDown[0], xPosPacman, yPosPacman, paint);
         }
 
         xPosGhost += 5.0f;
@@ -116,6 +115,24 @@ public class InteractiveView extends View {
 
         if (yPosGhost >= canvas.getHeight()) {
             yPosGhost = 5.0f;
+        }
+    }
+
+    // Method that draws pacman based on his viewDirection
+    public void drawPacman(Canvas canvas) {
+        switch (viewDirection) {
+            case (0):
+                canvas.drawBitmap(pacmanUp[currentFrame], xPosPacman, yPosPacman, paint);
+                break;
+            case (1):
+                canvas.drawBitmap(pacmanRight[currentFrame], xPosPacman, yPosPacman, paint);
+                break;
+            case (3):
+                canvas.drawBitmap(pacmanLeft[currentFrame], xPosPacman, yPosPacman, paint);
+                break;
+            default:
+                canvas.drawBitmap(pacmanDown[currentFrame], xPosPacman, yPosPacman, paint);
+                break;
         }
     }
 
@@ -209,9 +226,11 @@ public class InteractiveView extends View {
     }
 
     private void loadBitmapImages() {
-        // Add bitmap images of pacman facing right
+        // Scales the sprites based on screen
         int spriteSize = screenWidth/17;
         spriteSize = (spriteSize / 5) * 5;
+
+        // Add bitmap images of pacman facing right
         pacmanRight = new Bitmap[totalFrame];
         pacmanRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(),R.drawable.pacman_right1), spriteSize, spriteSize, false);
