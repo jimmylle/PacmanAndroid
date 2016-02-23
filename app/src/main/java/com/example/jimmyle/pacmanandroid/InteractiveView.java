@@ -30,7 +30,7 @@ public class InteractiveView extends View {
     private int viewDirection = 2;          // Direction that pacman is facing
     private int screenWidth;                // Width of the phone screen
     private int blockSize;                  // Size of a block on the map
-    public static int LONG_PRESS_TIME = 500; // Time in milliseconds
+    public static int LONG_PRESS_TIME = 750; // Time in milliseconds
     final Handler handler = new Handler();
 
     public InteractiveView(Context context) {
@@ -193,9 +193,6 @@ public class InteractiveView extends View {
                 calculateSwipeDirection();
                 handler.removeCallbacks(longPressed);
                 break;
-            }
-            case MotionEvent.ACTION_MOVE: {
-                handler.removeCallbacks(longPressed);
             }
         }
         return true;
