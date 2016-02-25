@@ -33,14 +33,15 @@ Authors: Kevin Lee, Jimmy Le
 8. ~~As a user, I can see the pellets on the board so I know where to move.~~ (50pts)
 9. ~~As a user, I can move my character to eat pellets so that I can get points.~~ (150pts)
 10. As a user, I can see my score to see how well I've played. (50pts)
-11. As a user, I can pause the game so that I can continue later on. (100pts)
-12. As a user, I can see enemy ghosts on the board so that I know where they spawn. (50pts)
-13. As a user, I can see enemy ghosts move so that I know where NOT to move. (250pts)
-14. As a user, I can keep track of my highest scores so I can strive to beat them. (50pts)
-15. As a user, I can hear Pacman background music so I can get HYPED. (100pts)
-16. As a user, I can see a mute button so that I have the ability to mute the music. (50pts)
-17. As a user, I can set different difficulties so that I can make it easier or harder for myself. (200pts)
-18. As a user, I can change the colors of the game so I can set things to my color preference. (100pts)
+11. As a user, I can pause the game so that I can continue later on. (50pts)
+12. As a user, I can unpause/resume the game so that I can continue where I left off. (50pts)
+13. As a user, I can see enemy ghosts on the board so that I know where they spawn. (50pts)
+14. As a user, I can see enemy ghosts move so that I know where NOT to move. (250pts)
+15. As a user, I can keep track of my highest scores so I can strive to beat them. (50pts)
+16. As a user, I can hear Pacman background music so I can get HYPED. (100pts)
+17. As a user, I can see a mute button so that I have the ability to mute the music. (50pts)
+18. As a user, I can set different difficulties so that I can make it easier or harder for myself. (200pts)
+19. As a user, I can change the colors of the game so I can set things to my color preference. (100pts)
 
 ## Project History
 ```
