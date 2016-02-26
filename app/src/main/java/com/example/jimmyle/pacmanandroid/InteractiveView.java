@@ -164,7 +164,7 @@ public class InteractiveView extends View {
                 y = i * blockSize;
                 // Draws pellet in the middle of a block
                 if ((leveldata1[i][j] & 16) != 0)
-                    canvas.drawRect(x + (blockSize/4), y + (blockSize/4), x + (3*blockSize/4),y + (3*blockSize/4) ,paint);
+                    canvas.drawRect(x + (2*blockSize/5), y + (2*blockSize/5), x + (3*blockSize/5),y + (3*blockSize/5) ,paint);
             }
         }
     }
