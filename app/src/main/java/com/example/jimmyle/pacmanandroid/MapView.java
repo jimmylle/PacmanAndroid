@@ -38,7 +38,7 @@ public class MapView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.BLACK);
-        paint.setColor(Color.CYAN);
+        paint.setColor(Color.BLUE);
         paint.setStrokeWidth(2.5f);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int screenWidth = metrics.widthPixels;
