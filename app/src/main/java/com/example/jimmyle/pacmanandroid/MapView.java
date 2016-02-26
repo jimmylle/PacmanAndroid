@@ -43,7 +43,7 @@ public class MapView extends View {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int screenWidth = metrics.widthPixels;
         int block_size = screenWidth / 17;
-        block_size = (block_size / 4) * 4;
+        block_size = (block_size / 5) * 5;
         int x;
         int y;
         for (int i = 0; i < 18; i++) {
