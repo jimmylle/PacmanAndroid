@@ -30,7 +30,8 @@ public class InteractiveView extends View {
     private int viewDirection = 2;          // Direction that pacman is facing
     private int screenWidth;                // Width of the phone screen
     private int blockSize;                  // Size of a block on the map
-    public static int LONG_PRESS_TIME = 750; // Time in milliseconds
+    private static int LONG_PRESS_TIME = 750; // Time in milliseconds
+    private int currentScore;      //Current game score
     final Handler handler = new Handler();
 
     public InteractiveView(Context context) {
@@ -61,8 +62,17 @@ public class InteractiveView extends View {
         move(canvas);
         // Draw the pellets
         drawPellets(canvas);
+        //Update score
+        updateScores(canvas);
         // Similar to java repaint() method, forces the canvas to redraw
         invalidate();
+    }
+    // Update the current score and high score
+    public void updateScores(Canvas canvas) {
+        paint.setTextSize(blockSize);
+        String formattedScore = String.format("%05d", currentScore);
+        String score = "Score : " + formattedScore;
+        canvas.drawText(score , 11*blockSize, 2*blockSize - 10, paint);
     }
 
     // Updates the character sprite and handles collisions
@@ -83,10 +93,11 @@ public class InteractiveView extends View {
             ch = leveldata1[yPosPacman / blockSize][xPosPacman / blockSize];
 
 
-            // If there is a pellet, eat it
+            // If there is a pellet, eat it and update the score
             if ((ch & 16) != 0) {
                 // Toggle pellet so it won't be drawn anymore
                 leveldata1[yPosPacman / blockSize][xPosPacman / blockSize] = (short) (ch ^ 16);
+                currentScore += 10;
             }
 
             // Checks for direction buffering
@@ -164,7 +175,7 @@ public class InteractiveView extends View {
                 y = i * blockSize;
                 // Draws pellet in the middle of a block
                 if ((leveldata1[i][j] & 16) != 0)
-                    canvas.drawRect(x + (2*blockSize/5), y + (2*blockSize/5), x + (3*blockSize/5),y + (3*blockSize/5) ,paint);
+                    canvas.drawCircle(x + blockSize/2, y + blockSize/2, blockSize/10, paint);
             }
         }
     }
