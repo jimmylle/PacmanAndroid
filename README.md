@@ -37,7 +37,7 @@ Authors: Kevin Lee, Jimmy Le
 12. ~~As a user, I can unpause/resume the game so that I can continue where I left off.~~ (50pts)
 13. As a user, I can see enemy ghosts on the board so that I know where they spawn. (50pts)
 14. As a user, I can see enemy ghosts move so that I know where NOT to move. (250pts)
-15. As a user, I can keep track of my highest scores so I can strive to beat them. (50pts)
+15. ~~As a user, I can keep track of my highest score so I can strive to beat it.~~ (50pts)
 16. As a user, I can hear Pacman background music so I can get HYPED. (100pts)
 17. As a user, I can see a mute button so that I have the ability to mute the music. (50pts)
 18. As a user, I can set different difficulties so that I can make it easier or harder for myself. (200pts)
