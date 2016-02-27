@@ -45,7 +45,7 @@
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
-            android:text="@string/highScoreLabel"
+            android:text="@string/settingsLabel"
             android:layout_marginBottom="5dp"/>
 
 
