@@ -12,6 +12,7 @@ public class PauseActivity extends Activity {
         setContentView(R.layout.paused_layout);
     }
 
+    // Method to start activity for Help button
     public void showHelpScreen(View view) {
         Intent helpIntent = new Intent(this, HelpActivity.class);
         startActivity(helpIntent);
@@ -21,5 +22,15 @@ public class PauseActivity extends Activity {
     public void showPlayScreen(View view) {
         Intent playIntent = new Intent(this, PlayActivity.class);
         startActivity(playIntent);
+        PlayActivity.getInstance().finish();
+        this.finish();
+    }
+
+    // Method to resume the game
+    public void resumeGame(View view) {
+        Intent resumeIntent = new Intent(this, PlayActivity.class);
+        resumeIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(resumeIntent);
+        this.finish();
     }
 }
