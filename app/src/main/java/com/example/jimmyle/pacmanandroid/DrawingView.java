@@ -35,7 +35,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private int viewDirection = 2;          // Direction that pacman is facing
     private int screenWidth;                // Width of the phone screen
     private int blockSize;                  // Size of a block on the map
-    public static int LONG_PRESS_TIME = 750; // Time in milliseconds
+    public static int LONG_PRESS_TIME=750;  // Time in milliseconds
+    private int currentScore = 0;           //Current game score
     final Handler handler = new Handler();
 
     public DrawingView(Context context) {
@@ -73,11 +74,34 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
                 // Moves the pacman based on his direction
                 move(canvas);
+
                 // Draw the pellets
                 drawPellets(canvas);
+                //Update current and high scores
+                updateScores(canvas);
                 holder.unlockCanvasAndPost(canvas);
+
+
             }
         }
+    }
+
+    public void updateScores(Canvas canvas) {
+        paint.setTextSize(blockSize);
+
+        Globals g = Globals.getInstance();
+        int highScore = g.getHighScore();
+        if (currentScore > highScore) {
+            g.setHighScore(currentScore);
+        }
+
+        String formattedHighScore = String.format("%05d", highScore);
+        String hScore = "High Score : " + formattedHighScore;
+        canvas.drawText(hScore, 0, 2*blockSize - 10, paint);
+
+        String formattedScore = String.format("%05d", currentScore);
+        String score = "Score : " + formattedScore;
+        canvas.drawText(score, 11 * blockSize, 2 * blockSize - 10, paint);
     }
 
     // Updates the character sprite and handles collisions
@@ -102,6 +126,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             if ((ch & 16) != 0) {
                 // Toggle pellet so it won't be drawn anymore
                 leveldata1[yPosPacman / blockSize][xPosPacman / blockSize] = (short) (ch ^ 16);
+                currentScore += 10;
             }
 
             // Checks for direction buffering
@@ -179,14 +204,14 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 y = i * blockSize;
                 // Draws pellet in the middle of a block
                 if ((leveldata1[i][j] & 16) != 0)
-                    canvas.drawRect(x + (blockSize / 4), y + (blockSize / 4), x + (3 * blockSize / 4), y + (3 * blockSize / 4), paint);
+                    canvas.drawCircle(x + blockSize / 2, y + blockSize / 2, blockSize/10, paint);
             }
         }
     }
 
     // Method to draw map layout
     public void drawMap(Canvas canvas) {
-        paint.setColor(Color.CYAN);
+        paint.setColor(Color.BLUE);
         paint.setStrokeWidth(2.5f);
         int x;
         int y;
