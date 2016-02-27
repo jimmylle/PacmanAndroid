@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    MediaPlayer player;
+    private static MediaPlayer player;
 
     // Method to start activity for Help button
     public void showHelpScreen(View view) {
@@ -18,10 +19,6 @@ public class MainActivity extends AppCompatActivity {
     // Method to start activity for Play button
     public void showPlayScreen(View view) {
         Intent playIntent = new Intent(this, PlayActivity.class);
-        player = MediaPlayer.create(this,R.raw.pacman_song);
-        player.setLooping(true);
-        player.setVolume(100,100);
-        player.start();
         startActivity(playIntent);
     }
 
@@ -29,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        player = MediaPlayer.create(this, R.raw.pacman_song);
+        player.setVolume(100, 100);
+        player.setLooping(true);
+        player.start();
     }
 
 //    @Override
@@ -53,13 +54,21 @@ public class MainActivity extends AppCompatActivity {
 //        return super.onOptionsItemSelected(item);
 //    }
 
+    public static MediaPlayer getPlayer() {
+        return player;
+    }
+
     @Override
     public void onPause() {
         super.onPause();
+        player.pause();
     }
 
     @Override
     public void onResume() {
+        Log.i("info", "MainActivity onResume");
         super.onResume();
+        player.start();
     }
+
 }

@@ -8,5 +8,13 @@ public class HelpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help_layout);
+        MainActivity.getPlayer().start();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainActivity.getPlayer().pause();
+    }
+
 }

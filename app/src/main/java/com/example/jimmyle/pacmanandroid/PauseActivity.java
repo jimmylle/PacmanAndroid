@@ -10,6 +10,7 @@ public class PauseActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paused_layout);
+        MainActivity.getPlayer().start();
     }
 
     // Method to start activity for Help button
@@ -33,4 +34,5 @@ public class PauseActivity extends Activity {
         startActivity(resumeIntent);
         this.finish();
     }
+
 }

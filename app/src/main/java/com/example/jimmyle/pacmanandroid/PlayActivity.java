@@ -31,6 +31,7 @@ public class PlayActivity extends Activity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("high_score", globals.getHighScore());
         editor.apply();
+        MainActivity.getPlayer().pause();
     }
 
     @Override
@@ -38,6 +39,8 @@ public class PlayActivity extends Activity {
         Log.i("info", "onResume");
         super.onResume();
         drawingView.resume();
+        MainActivity.getPlayer().start();
+
     }
 
     public static PlayActivity getInstance() {
