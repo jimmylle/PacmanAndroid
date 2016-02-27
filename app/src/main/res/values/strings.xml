@@ -16,6 +16,6 @@
     <string name="controls">Up: Swipe Up\nDown: Swipe Down\nLeft: Swipe Left\nRight: Swipe Right\n
         "Pause: Hold Screen    "
     </string>
-    <string name="highScoreLabel">High Scores</string>
+    <string name="settingsLabel">Settings</string>
     <string name="resumeLabel">Resume</string>
 </resources>
