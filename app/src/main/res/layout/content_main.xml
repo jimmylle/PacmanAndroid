@@ -10,7 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/black"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.jimmyle.pacmanandroid.MainActivity">
+    tools:context="com.example.jimmyle.pacmanandroid.MainActivity"
+    android:touchscreenBlocksFocus="false"
+    android:foreground="#622424">
 
     <ImageView
         android:id="@+id/MainMenuImage"
@@ -27,7 +29,6 @@
         android:layout_marginBottom="100dp"
         android:layout_marginLeft="35dp">
 
-
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
@@ -38,17 +39,14 @@
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
-            android:text="@string/highScoreLabel"
-            android:layout_marginBottom="5dp"/>
-
+            android:onClick="showHelpScreen"
+            android:text="@string/help"/>
 
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
-            android:onClick="showHelpScreen"
-            android:text="@string/help"
-            />
-
+            android:text="@string/settingsLabel"
+            android:layout_marginBottom="5dp"/>
     </LinearLayout>
 
 </RelativeLayout>
